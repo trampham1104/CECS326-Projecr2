@@ -1,1 +1,1 @@
-# CECS326-Projecr2
+# CECS326-Project2
