@@ -13,24 +13,24 @@ public class DiningPhilosophers
    {  
      //Creating 5 threads for each philosophy
      Philosopher[] philosophers = new Philosopher[5];
-     Object[] chopsticks = new Object[philosophers.length];
+     Object[] forks = new Object[philosophers.length];
 
      //Creating 5 chopstics
-     for(int i = 0; i < chopsticks.length; i++){
-       chopsticks[i] = new Object();
+     for(int i = 0; i < forks.length; i++){
+       forks[i] = new Object();
      }
 
      for (int i = 0; i < philosophers.length; i++){
-       Object leftChopstick = chopsticks[i];
-       Object rightChopstick = chopsticks[(i + 1) % chopsticks.length];
+       Object leftFork = forks[i];
+       Object rightFork = forks[(i + 1) % forks.length];
 
        //The last philosophe picks up the right chopstick first to avoid circular wait condition that leads to deadlock
        if(i == philosophers.length - 1){
-          philosophers[i] = new Philosopher(rightChopstick, leftChopstick);
+          philosophers[i] = new Philosopher(leftFork, rightFork, i);
        }
 
        else{
-         philosophers[i] = new Philosopher(leftChopstick, rightChopstick);
+         philosophers[i] = new Philosopher(leftFork, rightFork, i);
        }
 
        //Creating thread for each philosopher

@@ -10,14 +10,17 @@ import java.util.Random;
 
 public class Philosopher implements Runnable
 {
- private Object leftChopstick;
- private Object rightChopstick;
+ private int philNumber;
+ private Object leftFork;
+ private Object rightFork;
 
  //constructor
- public Philosopher(Object leftCh, Object rightCh){
-    leftChopstick = leftCh;
-    rightChopstick = rightCh;
+ public Philosopher(Object leftF, Object rightF, int philNumber){
+    leftFork = leftF;
+    rightFork = rightF;
+    this.philNumber = philNumber;
  }
+
  @Override
  public void run(){
  //alternating btw thinking and eating by picking up chopstick
@@ -25,7 +28,9 @@ public class Philosopher implements Runnable
         while(true){
             //Entering thinking state
             Thread.sleep(3000);
-            System.out.println("...thinking");
+            System.out.println("Philosopher" + philNumber + " is thinking...");
+
+            //Picking up fork
         }
     }    
  }
