@@ -1,4 +1,4 @@
-import java.util.Random;
+//import java.util.Random;
 
 /**
  * Philosopher.java
@@ -10,31 +10,75 @@ import java.util.Random;
 
 public class Philosopher implements Runnable
 {
- private int philNumber;
- private Object leftFork;
- private Object rightFork;
+ private Forks leftFork;
+ private Forks rightFork;
+ private int id;
+ private volatile boolean isFull = false;
 
  //constructor
- public Philosopher(Object leftF, Object rightF, int philNumber){
+ public Philosopher(int id, Forks leftF, Forks rightF){
+    this.id = id;
     leftFork = leftF;
     rightFork = rightF;
-    this.philNumber = philNumber;
  }
 
  @Override
  public void run(){
  //alternating btw thinking and eating by picking up chopstick
     try{
-        while(true){
+        while( !isFull ){
             //Entering thinking state
-            Thread.sleep(3000);
-            System.out.println("Philosopher" + philNumber + " is thinking...");
+            think();
 
-            //Picking up fork
+            if( this.id == 4){
+                if( rightFork.takeForks(this, State.RIGHT)){
+                    if( leftFork.takeForks(this, State.LEFT)){
+                        eat(); //Begin eating when obtains 2 forks
+                        System.out.println(this + " is full");
+                        leftFork.returnForks(this, State.LEFT);
+                    }
+                    rightFork.returnForks(this, State.RIGHT);
+                }
+            }
+
+            else{
+                //Start picking up fork to eat
+                if( leftFork.takeForks(this, State.LEFT)){
+                    if( rightFork.takeForks(this, State.RIGHT)){
+                        eat(); //Begin eating when obtains 2 forks
+                        System.out.println(this + " is full");
+                        rightFork.returnForks(this, State.RIGHT);
+                    }
+                    leftFork.returnForks(this, State.LEFT);
+                }
+            }
         }
-    }    
+    } catch (Exception e){
+        e.printStackTrace();
+    }
+    
+    
+    }
+
+    public void setFull(boolean isFull){
+        this.isFull = isFull;
+    }
+    
+    public void think() throws InterruptedException{
+        System.out.println(this + " is thinking...");
+        Thread.sleep(1000);
+
+    }
+
+    public void eat() throws InterruptedException{
+        System.out.println(this + " is eating...");
+        Thread.sleep(1000);
+
+    }
+
+    @Override
+    public String toString(){
+        return "Philosopher " + id;
+    }
  }
 
-
-
-}
